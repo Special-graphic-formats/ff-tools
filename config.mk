@@ -8,5 +8,5 @@ MANPREFIX= $(PREFIX)/share/man
 OUT= ./out
 
 LIBS= -lm
-CFLAGS= -Wall
+CFLAGS= -Wall -std=c99
 CC= gcc

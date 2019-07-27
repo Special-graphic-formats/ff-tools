@@ -44,7 +44,7 @@ should use them like this:
 
 For example to view a `.png` file with lel and basic gamma applied:
 
-    cat file.png | png2ff | ff-gamma | lel
+    cat file.png | png2ff | ff-gamma | ff2png | feh -
 
 (assuming you have [farbfeld](https://tools.suckless.org/farbfeld/) and
 [lel](http://git.2f30.org/lel/) installed.)
