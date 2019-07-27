@@ -1,0 +1,136 @@
+.TH FF-TOOLS 1 "27 Jul 2019" "0.01" "User Manual"
+
+.SH NAME
+ff-tools \- A collection of farbfeld tools
+
+.SH SYNOPSIS
+cat image.ff |
+.B ff-tool
+.I [parameters]
+| viewer
+
+.SH DESCRIPTION
+.I ff-tools
+is a collection of tools working with the
+[farbfeld](https://tools.suckless.org/farbfeld/) image file format.
+
+.SH TOOLS
+Generators:
+.TP
+.B ff-glow
+A circle glow calculator
+.TP
+.B ff-color
+A static color generator
+.TP
+.B ff-cosgen
+A cos-wave generator (x-direction)
+.TP
+.B ff-singen
+A sinewave generator (x-direction)
+.PP
+Functions:
+.TP
+.B ff-add
+Add two images
+.TP
+.B ff-chuffle
+A channel shuffler
+.TP
+.B ff-mul
+A multiplication tool
+.TP
+.B ff-sub
+Subtract: <first image> - <second image>
+.PP
+Corrections:
+.TP
+.B ff-gamma
+A gamma tool
+
+
+.SH EXAMPLE
+For example to view a `.png` file with lel and basic gamma applied:
+.br
+.I cat file.png | png2ff | ff-gamma | ff2png | feh -
+.br
+(assuming you have https://tools.suckless.org/farbfeld/
+.PP
+Generators
+.PP
+Generators do not have input images, they just produce images from scratch
+(and a few parameters).
+.TP
+.I ff-glow size
+Output: Image (size x size)
+.TP
+.I ff-color width height red green blue [alpha]
+Output: Image (width x height)
+.TP
+.I ff-cosgen width height steps
+Output: Image (width x height)
+.TP
+.I ff-singen width height steps
+Output: Image (width x height)
+.PP
+Functions
+.TP
+.I ff-chuffle r g b a
+Output: Image with shuffled rgba channels
+.br
+Examples:
+.br
+.I    cat image.ff | ff-chuffle g b r a > result.ff
+.br
+(rotates rgb)
+.br
+.I    cat image.ff | ff-chuffle g g r a > result.ff
+.br
+(fill more channels, discard others)
+.TP
+.I ff-add
+Input: Two images with the exact same size.
+.br
+Output: Addition result.
+.br
+Example:
+.br
+.I cat a.ff b.ff | ff-add > result.ff
+.TP
+.I ff-mul
+Input: Two images with the exact same size.
+.br
+Output: Multiplication result.
+.br
+Example:
+.br
+.I cat a.ff b.ff | ff-mul > result.ff
+.TP
+.I ff-sub
+Input: Two images with the exact same size.
+.br
+Output: Subtraction result.
+.br
+Example:
+.br
+.I cat a.ff b.ff | ff-sub > result.ff
+.PP
+Corrections
+.TP
+.I ff-gamma [gamma]
+Input: Image
+.br
+Output: Image with gamma (default: 2.2)
+.br
+Examples:
+.br
+.I cat image.ff | ff-gamma > result.ff
+.br
+.I cat image.ff | ff-gamma 3.4 > result.ff
+
+.SH "SEE ALSO"
+2ff(1), ff2jpg(1), ff2pam(1), ff2png(1), ff2ppm(1), jpg2ff(1), png2ff(1)
+
+.SH AUTHOR
+The author of this package is known as \fIsirjofri\fR and the source is hosted
+here https://\:github.com/\:sirjofri/\:ff-tools/
