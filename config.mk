@@ -8,6 +8,7 @@ PREFIX= /usr/local
 MANPREFIX= $(PREFIX)/share/man
 
 # default output path
+SRC= ./src
 OUT= ./out
 
 LIBS= -lm

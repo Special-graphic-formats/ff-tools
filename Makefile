@@ -1,13 +1,14 @@
 include config.mk
 
-TOOLS=$(shell ls ff-*.c | sed 's/\.c//g')
-DEPS= tools.h
+TOOLS=$(shell find $(SRC) -type f -iname ff-*.c -exec basename '{}' \; | sed 's/\.c//g')
+DEPS= $(SRC)/tools.h
 
 .PHONY: all
 all: options $(OUT) $(addprefix $(OUT)/,$(TOOLS)) man
 
 .PHONY: options
 options:
+	@echo "SRC    = $(SRC)"
 	@echo "LIBS   = $(LIBS)"
 	@echo "CFLAGS = $(CFLAGS)"
 	@echo "CC     = $(CC)"
@@ -55,13 +56,13 @@ $(OUT)/ff-tools.1: ff-tools.1.in
 	@cat $< | sed -e "s/VNUM/$(VERSION)/g" | sed -e "s/DATE/$(DATE)/g" > $@
 	@echo " → $@ compiled"
 
-$(OUT)/tools.o: tools.c tools.h
+$(OUT)/tools.o: $(SRC)/tools.c $(SRC)/tools.h
 	@$(CC) $(LIBS) $(CFLAGS) $(CFLAGS_ADD) -o $@ -c $<
 	@echo " → $@ compiled"
 
-$(OUT)/%.o: %.c $(DEPS)
+$(OUT)/%.o: $(SRC)/%.c $(DEPS)
 	@$(CC) $(LIBS) $(CFLAGS) $(CFLAGS_ADD) -o $@ -c $<
 	@echo " → $@ compiled"
 
-$(OUT)/%: $(OUT)/%.o tools.o
-	@$(CC) $(LIBS) $(CFLAGS) $(CFLAGS_ADD) -o $@ $< tools.o
+$(OUT)/%: $(OUT)/%.o $(SRC)/tools.o
+	@$(CC) $(LIBS) $(CFLAGS) $(CFLAGS_ADD) -o $@ $^
