@@ -1,14 +1,10 @@
 include config.mk
 
-VERSION=0.01pre01
-DATE=June 06, 2018
-
-CFLAGS_ADD= -D_POSIX_C_SOURCE=200809L -std=c99 -pedantic -Wall -g
 TOOLS=$(shell ls ff-*.c | sed 's/\.c//g')
 DEPS= tools.h
 
 .PHONY: all
-all: options $(OUT) $(addprefix $(OUT)/,$(TOOLS)) $(OUT)/tools.l
+all: options $(OUT) $(addprefix $(OUT)/,$(TOOLS)) man
 
 .PHONY: options
 options:
@@ -49,7 +45,13 @@ demo.png: demo.sh
 $(OUT):
 	@mkdir -p $@
 
-$(OUT)/tools.l: tools.l.in
+man: $(OUT)/ff-tools.l $(OUT)/ff-tools.1
+
+$(OUT)/ff-tools.l: ff-tools.l.in
+	@cat $< | sed -e "s/VNUM/$(VERSION)/g" | sed -e "s/DATE/$(DATE)/g" > $@
+	@echo " → $@ compiled"
+
+$(OUT)/ff-tools.1: ff-tools.1.in
 	@cat $< | sed -e "s/VNUM/$(VERSION)/g" | sed -e "s/DATE/$(DATE)/g" > $@
 	@echo " → $@ compiled"
 
